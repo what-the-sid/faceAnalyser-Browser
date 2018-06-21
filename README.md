@@ -18,13 +18,16 @@ Simple Face detection and analyser for browser using [Tracking.js](https://track
 var analyser = new Analyser;
 
 //Detect new face.
-analyser.init_Face("video:,"canvas"); //id ofVideo and Canvas as params.
+ //id ofVideo and Canvas as params.
+analyser.init_Face("video:,"canvas");
 
 //get analysed brightness (returns 1 if normal brightness.
-analyser.getBrightness(140,200);  //define minimum and maximum brightness as params.
+  //define minimum and maximum brightness as params.
+analyser.getBrightness(140,200);
 
 //get distance of face from a centre area.
-analyser.getDistancefromCentreRect(10); //area(as rectangle) to be initialized as centre(in percentage) as params.
+   //area(as rectangle) to be initialized as centre(in percentage) as params.
+analyser.getDistancefromCentreRect(10);
 
 //get distnace of face from centre point.
 analyser.getDistancefromCentrePoint;
