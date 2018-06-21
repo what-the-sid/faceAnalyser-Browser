@@ -9,7 +9,10 @@ Simple Face detection and analyser for browser using [Tracking.js](https://track
 <canvas id="script"></canvas>
 
 <script src="script/Analyser.js"></script>
-<script>
+
+```
+
+``` javascript
 
 var analyser = new Analyser;
 
@@ -24,4 +27,5 @@ analyser.getDistancefromCentreRect(10) //area(as rectangle) to be initialized as
 
 //get distnace of face from centre point
 analyser.getDistancefromCentrePoint
-</scipt>
+
+```
