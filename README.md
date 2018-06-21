@@ -21,7 +21,7 @@ var analyser = new Analyser;
 analyser.init_Face("video","canvas");  //id ofVideo and Canvas as params.
 
 //get analysed brightness (returns 1 if normal brightness.
-analyser.getBrightness(140,200);  //define minimum and maximum brightness as params.
+analyser.getBrightness(140,200);  //define minimum and maximum brightness as params[0-255].
 
 //get distance of face from a centre area.
 analyser.getDistancefromCentreRect(10);   //area(as rectangle) to be initialized as centre(in percentage) as params.
