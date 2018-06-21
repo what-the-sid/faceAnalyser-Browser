@@ -1,3 +1,27 @@
-# Face-align-system-using-Tracking.js
+# Face Analyser for Browsers
 
-A simple face cdetection and face alignment checking system using JS for browser users.
+Simple Face detection and analyser for browser using [Tracking.js](https://trackingjs.com).
+
+# Usage:
+
+```
+<video id="video"></video>
+<canvas id="script"></canvas>
+
+<script src="script/Analyser.js"></script>
+<script>
+
+var analyser = new Analyser;
+
+//Detect new face.
+analyser.init_Face("video:,"canvas") //id ofVideo and Canvas as params
+
+//get analysed brightness (returns 1 if normal brightness:
+analyser.getBrightness(140,200)  //define minimum and maximum brightness as params
+
+//get distance of face from a centre area
+analyser.getDistancefromCentreRect(10) //area(as rectangle) to be initialized as centre(in percentage) as params
+
+//get distnace of face from centre point
+analyser.getDistancefromCentrePoint
+</scipt>
