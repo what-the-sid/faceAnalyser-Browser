@@ -1,4 +1,4 @@
-function testVideo()
+function Analyser()
 {
   this.face = []
   this.x;
@@ -10,16 +10,18 @@ function testVideo()
 }
 
 
-testVideo.protoype.getFaceRect = function(rect)
+Analyser.protoype.getFaceRect = function(rect)
 {
+  context.strokeStyle = '#a64ceb';
   this.face[0] = rect.x
   this.face[1] = rect.y
   this.face[2] = rect.width
   this.face[3] = rect.height
+  context.strokeRect(rect.x, rect.y, rect.width, rect.height);
 }
 
 
-testVideo.protoype.getCentreRect = function(incrm)
+Analyser.protoype.getCentreRect = function(incrm)
 {
   var centre = []
 
@@ -65,7 +67,7 @@ function findDistance(centreX,centreY,initX,initY)
 }
 
 
-testVideo.protoype.getDistancefromCentreRect = function(incrm)
+Analyser.protoype.getDistancefromCentreRect = function(incrm)
 {
   var centre_c = findCentrePoints(getCentreRect(incrm))
   var centre_f = findCentrePoints(getCentreRect(this.face))
@@ -79,7 +81,7 @@ testVideo.protoype.getDistancefromCentreRect = function(incrm)
 }
 
 
-testVideo.prototype.getDistancefromCentrePoint = function()
+Analyser.prototype.getDistancefromCentrePoint = function()
 {
   distance = 0
 
@@ -94,7 +96,7 @@ testVideo.prototype.getDistancefromCentrePoint = function()
 }
 
 
-testVideo.protoype.getBrightness = function(min,max)
+Analyser.protoype.getBrightness = function(min,max)
 {
   var brightness = 0;
   var imgData = this.context.getImageData(this.face[0], this.face[1], this.face[2], this.face[3]);
@@ -111,7 +113,7 @@ testVideo.protoype.getBrightness = function(min,max)
 }
 
 
-testVideo.prototype.init_Face = function(videoId,canvasId)
+Analyser.prototype.init_Face = function(videoId,canvasId)
 {
   var video = document.getElementById(videoId);
   this.canvas = document.getElementById(canvasId);
@@ -123,6 +125,9 @@ testVideo.prototype.init_Face = function(videoId,canvasId)
   tracker.setEdgesDensity(0.1);
   tracking.track(video.id, tracker, { camera: true });
   tracker.on('track', function(event) {
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+
     event.data.forEach(function(rect) {
       this.getFaceRect(rect)
     });
@@ -133,7 +138,7 @@ var callback = function(){
   return "Done"
 }
 
-testVideo.prototype.getData(jsFilePath,callback)
+Analyser.prototype.getData(jsFilePath,callback)
 {
   var js = document.createElement("script");
 
