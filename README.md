@@ -4,7 +4,7 @@ Simple Face detection and analyser for browser using [Tracking.js](https://track
 
 # Usage:
 
-```
+``` html
 <video id="video"></video>
 <canvas id="script"></canvas>
 
