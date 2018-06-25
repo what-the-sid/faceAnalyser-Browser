@@ -1,32 +1,34 @@
 # Face Analyser for Browsers
 
-Simple Face detection and analyser for browser using [Tracking.js](https://trackingjs.com).
+Simple Face detection and analyser for browser using [clmtrackr](https://github.com/auduno/clmtrackr).
 
 # Usage:
 
 ``` html
-<video id="video"></video>
-<canvas id="script"></canvas>
-
+<script src="script/clmtrackr.min.js"></script>
 <script src="script/Analyser.js"></script>
+<p id = "status"></p>
+</head>
+<video id="video" width="640" height="480" preload autoplay loop muted></video>
+<canvas id="canvas" width="640" height="480"></canvas>
 
 ```
 # script
 
 ``` javascript
 
-var analyser = new Analyser;
+<script>
+var analyser = new Analyser(); //create new analyzing instance
 
-//Detect new face.
-analyser.init_Face("video","canvas");  //id ofVideo and Canvas as params.
-
-//get analysed brightness (returns 1 if normal brightness,else 0).
-analyser.getBrightness(140,200);  //define minimum and maximum brightness as params[0-255].
-
-//get distance of face from a centre area.
-analyser.getDistancefromCentreRect(10);   //area(as rectangle) to be initialized as centre(in percentage) as params.
-
-//get distnace of face from centre point.
-analyser.getDistancefromCentrePoint;
+analyser.features = {'centre_w':160, //width of centre rectangle
+                'centre_h':120,  //height of centre rectangle
+              'drawLandmarks':true, //draw facial landmarks
+            'drawCentreMark':true, //draw rectangle guide in centre
+            'strokeColor_before':'#FF0000', //color before right alignment
+            'strokeColor_after': '#00FF00', //color after right alignment
+            'status_elementId': document.getElementById("status") //input status to an element
+          }
+analyser.init_Face("video","canvas")  //id ofVideo and Canvas as params.
+</script>
 
 ```

@@ -1,0 +1,33 @@
+<html>
+<head>
+<style>
+video, canvas {
+  margin-left: 230px;
+  margin-top: 120px;
+  position: absolute;
+}
+</style>
+
+<script src="script/clmtrackr.min.js"></script>
+<script src="script/Analyser.js"></script>
+<p id = "status"></p>
+</head>
+<video id="video" width="640" height="480" preload autoplay loop muted></video>
+<canvas id="canvas" width="640" height="480"></canvas>
+
+
+<script>
+var analyser = new Analyser();
+
+analyser.features = {'centre_w':160,
+                'centre_h':120,
+              'drawLandmarks':true,
+            'drawCentreMark':true,
+            'strokeColor_before':'#FF0000',
+            'strokeColor_after': '#00FF00',
+            'status_elementId': document.getElementById("status")
+          }
+analyser.init_Face("video","canvas")  //id ofVideo and Canvas as params.
+</script>
+
+</html>

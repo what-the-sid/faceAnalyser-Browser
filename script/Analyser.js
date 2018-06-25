@@ -1,152 +1,139 @@
 function Analyser()
 {
-  this.face = []
-  this.x;
-  this.canvas;
-  this.context;
-  this.getData('face-min.js',callback);
-  this.getData('stats.min.js',callback);
-  this.getData('tracking-min.js',callback);
+  this.features = {}
+  this.points;
+  this.result = {};
+  this.centreSize = 10;
+  this.getBrightnessBool = false;
+  this.getDistancefromCentreRectBool = false;
 }
 
 
-Analyser.protoype.getFaceRect = function(rect)
-{
-  context.strokeStyle = '#a64ceb';
-  this.face[0] = rect.x
-  this.face[1] = rect.y
-  this.face[2] = rect.width
-  this.face[3] = rect.height
-  context.strokeRect(rect.x, rect.y, rect.width, rect.height);
-}
-
-
-Analyser.protoype.getCentreRect = function(incrm)
+Analyser.prototype.getCentreRect = function(canvas)
 {
   var centre = []
+  var w_incrm = this.features['centre_w']
+  var h_incrm = this.features['centre_h']
+  centre = [canvas.width/2,canvas.height/2]
+  var central =[]
 
-  width = findPerValue(this.face[2],incrm)
-  height = findPerValue(this.face[3],incrm)
 
-  centre[0] = this.canvas.width - width;
-  centre[1] = this.canvas.height - height;
+  centre[0] = centre[0] - w_incrm;
+  centre[1] = centre[1] - h_incrm;
 
-  centre[2] = this.canvas.width + width;
-  centre[3] = this.canvas.height + height;
-
+  centre[2] = w_incrm*2;
+  centre[3] = h_incrm*2;
+  this.points = centre
   return centre
 }
 
-function findPerValue(x,incrm)
+Analyser.prototype.getDistancefromCentreRect = function(matrix,points)
 {
-  var value = x/100*incrm
-  value = x+value
-}
-
-
-function findCentrePoints(coord)
-{
-  centre = {}
-  centre_points = [(coord[2]+coord[0])/2,(coord[3]+coord[1])/2]
-  point = 0
-
-  for(i=0;i<2;i++){
-    for(j=0;j<2;j++){
-      centre[point]={x:centre_points[i],y:centre_points[j]}
-      point++
+  var check = []
+  function isBetween(array)
+  {
+    //console.log([array[0]-points[0],array[0]-points[2]])
+    if(array[0]>=points[0] && array[0]<=points[2]+points[0]
+      &&array[1]>=points[1]&&array[1]<=points[3]+points[1])
+    return 1
+    else {
+      return 0
     }
   }
-  return centre
-}
 
-
-function findDistance(centreX,centreY,initX,initY)
-{
-  distance = Math.sqrt(((centreX-initX)*(centreX-initX)) + ((centreY-initY)*(centreY-initY)))
-  return distance
-}
-
-
-Analyser.protoype.getDistancefromCentreRect = function(incrm)
-{
-  var centre_c = findCentrePoints(getCentreRect(incrm))
-  var centre_f = findCentrePoints(getCentreRect(this.face))
-  var faceDiff=[]
-
-  for(i=0;i<4;i++){
-  faceDiff[i] = findDistance(centre_c[i].x,centre_c[i].y,centre_f[i].x,centre_f[i].x)
+  for(i=0;i<matrix.length;i++){
+    check[i]=isBetween(matrix[i])
   }
 
-  return faceDiff
+  return check
 }
 
+// Analyser.prototype.getBrightness = function()
+// {
+//   var brightness = 0;
+//   var count = 0
+//   if(this.face.length>=1)
+//   {
+//   var imgData = this.context.getImageData(this.face[0]+10, this.face[1]+10, this.face[2]-10, this.face[3]-10);
+//   for (i = 0; i < imgData.data.length; i += 4) {
+//     count += 3
+//     value = (imgData.data[i] + imgData.data[i+1]+ imgData.data[i+2])/3
+//     if(value>0)
+//     brightness += value
+//   }
+// console.log(brightness/count)
+// return brightness
+//   }
+// }
 
-Analyser.prototype.getDistancefromCentrePoint = function()
+Analyser.prototype.liveStreaming = function()
 {
-  distance = 0
+  const constraints = {
+    video: true
+  };
 
-  var centreX = this.face[0]+(((this.face[0]+this.face[2])-this.face[0])/2)
-  var centreY = this.face[1]+(((this.face[1]+this.face[3])-this.face[1])/2)
+  const video = document.querySelector("video");
 
-  var initX = this.canvas.width;
-  var initY = this.canvas.height;
-
-  return findDistance(centreX,centreY,initX,initY)
-
-}
-
-
-Analyser.protoype.getBrightness = function(min,max)
-{
-  var brightness = 0;
-  var imgData = this.context.getImageData(this.face[0], this.face[1], this.face[2], this.face[3]);
-  for (i = 0; i < imgData.data.length; i += 4) {
-    brightness += 0.299*imgData.data[i] + 0.587*imgData.data[i+1] + 0.114*imgData.data[i+2]
+  function handleSuccess(stream) {
+    video.srcObject = stream;
   }
 
-  brightness = brightness/imgData.data.length
+  function handleError(error) {
+    console.error('Rejected!', error);
+  }
 
-  if(brightness <= min || brightness >= max)
-    return 0
-  else
-    return 1
+  navigator.mediaDevices.getUserMedia(constraints).
+    then(handleSuccess).catch(handleError);
 }
 
 
 Analyser.prototype.init_Face = function(videoId,canvasId)
 {
-  var video = document.getElementById(videoId);
-  this.canvas = document.getElementById(canvasId);
-  this.context = canvas.getContext('2d');
-  var tracker = new tracking.ObjectTracker('face');
+  this.liveStreaming();
+  var pointer=this
+  var videoInput = document.getElementById(videoId);
+  canvas = document.getElementById(canvasId);
+  context = canvas.getContext('2d')
+  var ctracker = new clm.tracker();
+  ctracker.init();
+  ctracker.start(videoInput);
+  var points = this.getCentreRect(canvas)
 
-  tracker.setInitialScale(4);
-  tracker.setStepSize(2);
-  tracker.setEdgesDensity(0.1);
-  tracking.track(video.id, tracker, { camera: true });
-  tracker.on('track', function(event) {
+  function positionLoop() {
 
-    context.clearRect(0, 0, canvas.width, canvas.height);
+    requestAnimationFrame(positionLoop);
 
-    event.data.forEach(function(rect) {
-      this.getFaceRect(rect)
-    });
-  });
-}
+    if(pointer.features['drawCentreMark']==true){
+      context.clearRect(0, 0, canvas.width, canvas.height);
+      context.rect(points[0],points[1],points[2],points[3])
+      context.stroke();
+    }
 
-var callback = function(){
-  return "Done"
-}
+    var positions = ctracker.getCurrentPosition();
+    try{
+    if(pointer.features['drawLandmarks']==true){
+      if(pointer.result['alignment']!=false){
+        if(pointer.result['alignment'][0]==1 && pointer.result['alignment'][1]==1 && pointer.result['alignment'][2]==1)
+      }
+      else
+      context.beginPath();
+      context.moveTo(positions[0][0], positions[0][1]);
+      context.lineTo(positions[14][0], positions[14][1]);
+      context.lineTo(positions[7][0], positions[7][1]);
+      context.closePath();
+      context.stroke();
+    }
+    var marks = [positions[0],positions[14],positions[7]]
 
-Analyser.prototype.getData(jsFilePath,callback)
-{
-  var js = document.createElement("script");
+      var value=pointer.getDistancefromCentreRect(marks,points)
+      pointer.result = {'alignment':value,'brightness':'not yet found','face':true}
+      pointer.features['status_elementId'].innerHtml = pointer.result
+    }
 
-  js.type = "text/javascript";
-  js.src = jsFilePath;
-
-  document.head.appendChild(js);
-
-  js.onreadystatechange = callback;
-  js.onload = callback;
+    catch(err){
+      pointer.result = {'alignment':false,'brightness':'not yet found','face':false}
+      pointer.features['status_elementId'].innerHtml = pointer.result
+    }
+  }
+  positionLoop();
 }
