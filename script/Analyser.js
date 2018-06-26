@@ -8,7 +8,6 @@ function Analyser()
   this.getDistancefromCentreRectBool = false;
 }
 
-
 Analyser.prototype.getCentreRect = function(canvas)
 {
   var centre = []
@@ -127,13 +126,14 @@ Analyser.prototype.init_Face = function(videoId,canvasId)
           statusElement.innerHTML = "Game Level: Move the triangle into the rectangle"
         }
       }
-
+      if(positions[0][0]!=undefined){
       context.beginPath();
       context.moveTo(positions[0][0], positions[0][1]);
       context.lineTo(positions[14][0], positions[14][1]);
       context.lineTo(positions[7][0], positions[7][1]);
       context.closePath();
       context.stroke();
+    }
     }
     var marks = [positions[0],positions[14],positions[7]]
 
