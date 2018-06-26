@@ -114,8 +114,12 @@ Analyser.prototype.init_Face = function(videoId,canvasId)
     if(pointer.features['drawLandmarks']==true){
       if(pointer.result['alignment']!=false){
         if(pointer.result['alignment'][0]==1 && pointer.result['alignment'][1]==1 && pointer.result['alignment'][2]==1)
-      }
-      else
+          context.strokeStyle = pointer.features['strokeColor_after']
+
+        else
+          context.strokeStyle = pointer.features['strokeColor_before']
+        }
+
       context.beginPath();
       context.moveTo(positions[0][0], positions[0][1]);
       context.lineTo(positions[14][0], positions[14][1]);
