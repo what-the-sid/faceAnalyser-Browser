@@ -89,9 +89,9 @@ Analyser.prototype.liveStreaming = function()
 
 Analyser.prototype.init_Face = function(videoId,canvasId)
 {
-  if(pointer.features['enableCustomStreaming']==true)
+  if(this.features['enableCustomStreaming']==true)
     this.liveStreaming();
-  
+
   var pointer=this
   var videoInput = document.getElementById(videoId);
   canvas = document.getElementById(canvasId);
