@@ -113,12 +113,16 @@ Analyser.prototype.init_Face = function(videoId,canvasId)
     try{
     if(pointer.features['drawLandmarks']==true){
       if(pointer.result['alignment']!=false){
-        if(pointer.result['alignment'][0]==1 && pointer.result['alignment'][1]==1 && pointer.result['alignment'][2]==1)
+        if(pointer.result['alignment'][0]==1 && pointer.result['alignment'][1]==1 && pointer.result['alignment'][2]==1) {
           context.strokeStyle = pointer.features['strokeColor_after']
-
-        else
-          context.strokeStyle = pointer.features['strokeColor_before']
+          pointer.features['status_elementId'].innerHTML = "Hurray!! Level completed"
         }
+
+        else{
+          context.strokeStyle = pointer.features['strokeColor_before']
+          pointer.features['status_elementId'].innerHTML = "Game Level: Move the triangle into the rectangle"
+        }
+      }
 
       context.beginPath();
       context.moveTo(positions[0][0], positions[0][1]);
@@ -130,13 +134,12 @@ Analyser.prototype.init_Face = function(videoId,canvasId)
     var marks = [positions[0],positions[14],positions[7]]
 
       var value=pointer.getDistancefromCentreRect(marks,points)
-      pointer.result = {'alignment':value,'brightness':'not yet found','face':true}
-      pointer.features['status_elementId'].innerHtml = pointer.result
+      pointer.result = {'alignment':value,'face':true}
     }
 
     catch(err){
-      pointer.result = {'alignment':false,'brightness':'not yet found','face':false}
-      pointer.features['status_elementId'].innerHtml = pointer.result
+      pointer.result = {'alignment':false,'face':false}
+      pointer.features['status_elementId'].innerHTML = "No Face found"
     }
   }
   positionLoop();
