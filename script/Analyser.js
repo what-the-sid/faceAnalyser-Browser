@@ -89,7 +89,9 @@ Analyser.prototype.liveStreaming = function()
 
 Analyser.prototype.init_Face = function(videoId,canvasId)
 {
-  this.liveStreaming();
+  if(pointer.features['enableCustomStreaming']==true)
+    this.liveStreaming();
+  
   var pointer=this
   var videoInput = document.getElementById(videoId);
   canvas = document.getElementById(canvasId);
@@ -98,6 +100,8 @@ Analyser.prototype.init_Face = function(videoId,canvasId)
   ctracker.init();
   ctracker.start(videoInput);
   var points = this.getCentreRect(canvas)
+  var statusElement = pointer.features['status_elementId']
+  // var statusDomain = pointer.features['status_elementDomain;']
 
   function positionLoop() {
 
@@ -115,12 +119,12 @@ Analyser.prototype.init_Face = function(videoId,canvasId)
       if(pointer.result['alignment']!=false){
         if(pointer.result['alignment'][0]==1 && pointer.result['alignment'][1]==1 && pointer.result['alignment'][2]==1) {
           context.strokeStyle = pointer.features['strokeColor_after']
-          pointer.features['status_elementId'].innerHTML = "Hurray!! Level completed"
+          statusElement.innerHTML = "Hurray!! Level completed"
         }
 
         else{
           context.strokeStyle = pointer.features['strokeColor_before']
-          pointer.features['status_elementId'].innerHTML = "Game Level: Move the triangle into the rectangle"
+          statusElement.innerHTML = "Game Level: Move the triangle into the rectangle"
         }
       }
 
@@ -139,7 +143,7 @@ Analyser.prototype.init_Face = function(videoId,canvasId)
 
     catch(err){
       pointer.result = {'alignment':false,'face':false}
-      pointer.features['status_elementId'].innerHTML = "No Face found"
+      statusElement.innerHTML = "No Face found"
     }
   }
   positionLoop();
