@@ -142,6 +142,7 @@ Analyser.prototype.init_Face = function(videoId,canvasId)
     catch(err){
       pointer.result = {'alignment':false,'face':false}
       statusElement.innerHTML = "No Face found"
+      context.strokeStyle = pointer.features['strokeColor_before']
     }
   }
   positionLoop();
