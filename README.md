@@ -32,3 +32,5 @@ analyser.init_Face("video","canvas")  //id ofVideo and Canvas as params.
 </script>
 
 ```
+
+# for demo --> [demo](https://isidharth.github.io/faceAnalyser-Browser/)
