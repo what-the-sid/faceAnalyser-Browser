@@ -20,17 +20,19 @@ Simple Face detection and analyser for browser using [clmtrackr](https://github.
 <script>
 var analyser = new Analyser(); //create new analyzing instance
 
-analyser.features = {'centre_w':160, //width of centre rectangle
-                'centre_h':120,  //height of centre rectangle
-              'drawLandmarks':true, //draw facial landmarks
-            'drawCentreMark':true, //draw rectangle guide in centre
-            'strokeColor_before':'#FF0000', //color before right alignment
-            'strokeColor_after': '#00FF00', //color after right alignment
-            'status_elementId': document.getElementById("status") //input status to an element
+analyser.features = {
+            'enableCustomStreaming':true, // Enable Analyser.js camera streaming. Else code it manually
+            'centre_w':160, //width of the rectangle in centre
+            'centre_h':120, //height of the rectangle in centre
+            'drawLandmarks':true, //draw landMarks on face
+            'drawCentreMark':true, //draw centre rectangle for alignment
+            'strokeColor_before':'#FF0000', //color of markings on wrong alignment 'red'
+            'strokeColor_after': '#00FF00', //color of markings on right alignment 'green'
+            'status_elementId': document.getElementById("status"), //Element in which the status should be updated
           }
 analyser.init_Face("video","canvas")  //id ofVideo and Canvas as params.
 </script>
 
 ```
 
-# for demo --> [demo](https://isidharth.github.io/faceAnalyser-Browser/)
+for demo [click here](https://isidharth.github.io/faceAnalyser-Browser/)
