@@ -35,4 +35,4 @@ analyser.init_Face("video","canvas")  //id ofVideo and Canvas as params.
 
 ```
 
-for demo [click here](https://isidharth.github.io/faceAnalyser-Browser/)
+for demo [click here](https://what-the-sid.github.io/faceAnalyser-Browser/)
